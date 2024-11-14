@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>InsightLang</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+        /* 숨겨진 파일 입력 필드 */
+        #file-upload {
+            display: none;
+        }
+        
+        /* 파일 이름이 표시될 박스 스타일 */
+        #upload-label {
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body class="is-preload">
+	<script src="assets/js/file-upload.js"></script>
+	<script src="assets/js/main.js"></script>
+    <!-- Header -->
+    <header id="header">
+        <h1>InsightLang</h1>
+        <p>A simple template for telling the world when you'll launch<br />
+        your next big thing. Brought to you by <a href="http://html5up.net">HTML5 UP</a>.</p>
+    </header>
+
+    <!-- file select -->
+    <form id="fileSelect" method="post" action="http://localhost:5000/fileupload" enctype="multipart/form-data">
+        <label id="upload-label" for="file-upload">Put Thesis</label>
+        <input type="file" name="file" id="file-upload" accept=".pdf" />
+        <input type="submit" value="Sign Up" />
+    </form>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; Untitled.</li>
+        </ul>
+    </footer>
+
+   
+</body>
+</html>

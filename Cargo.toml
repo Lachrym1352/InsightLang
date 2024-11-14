@@ -1,0 +1,11 @@
+[package]
+name = "InsightLang"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.0"        # Actix 웹 프레임워크
+serde = { version = "1.0", features = ["derive"] }    # JSON 직렬화 및 역직렬화
+serde_json = "1.0"       # JSON 처리
+reqwest = { version = "0.12.9", features = ["json"] }
+
