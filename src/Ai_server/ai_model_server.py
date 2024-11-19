@@ -5,13 +5,67 @@ from werkzeug.utils import secure_filename
 import torch
 from pdfminer.high_level import extract_text
 
-app = Flask(__name__)   #Flask application 생성
+# Use a pipeline as a high-level helper
+from transformers import pipeline
 
-@app.route('/fileupload',methods = ['POST'])      #() 안의 주소에 접속하면 바로 아랫줄에 있는 함수 호출
-# 파일 업로드
+translation_pipeline = pipeline("text2text-generation", model="google/mt5-base")
+
+summarization_pipeline = pipeline("summarization", model="google/pegasus-xsum")
+
+
+app = Flask(__name__)
+
+# 업로드된 파일을 저장할 디렉토리 설정
+UPLOAD_FOLDER = 'uploads/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# 디렉토리가 없으면 생성
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+@app.route('/fileupload', methods=['POST'])
 def file_upload():
+    # 파일이 요청에 포함되어 있는지 확인
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
     file = request.files['file']
+
+    # 파일 이름이 비어 있는지 확인
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # 안전한 파일 이름 사용
     filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    # 파일 저장
+    file.save(file_path)
+
+    # PDF에서 텍스트 추출
+    try:
+        extracted_text = extract_text(file_path)
+
+         # 번역
+        translated_text = translation_pipeline(extracted_text, max_length=512, truncation=True)[0]['translation_text']
+
+        # 요약
+        summary = summarization_pipeline(translated_text, max_length=150, min_length=50, truncation=True)[0]['summary_text']
+    
+
+
+        return jsonify({
+            "original_text": extracted_text,
+            "translated_text": translated_text,
+            "summary": summary
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
     
     
 
