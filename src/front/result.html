@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>InsightLang - Translation Result</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+    
+    <header>
+        <h1>InsightLang</h1>
+        <p>번역 및 요약 결과</p>
+    </header>
+
+    <div class="container">
+        <!-- 복원된 텍스트 -->
+        <div class="column">
+            <h2>Restored Text</h2>
+            <div id="restored-text"></div>
+        </div>
+
+        <!-- 요약 -->
+        <div class="column">
+            <h2>Summary</h2>
+            <p id="summary"></p>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter"></span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram"></span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub"></span></a></li>
+        </ul>
+    </footer>
+
+    <div id="error-message" style="display: none; text-align: center; color: red; margin-top: 20px;">
+        <h2>Error: No result data found.</h2>
+        <p>Please try uploading the file again.</p>
+        <button onclick="window.location.href='index.html'">Go Back</button>
+    </div>
+    
+    <script>
+        // 세션 스토리지에서 결과 데이터를 불러옵니다.
+        const resultData = JSON.parse(sessionStorage.getItem('resultData'));
+
+        if (resultData) {
+            try {
+                // 번역된 텍스트와 요약을 출력합니다.
+                document.getElementById('restored-text').innerHTML = resultData.translated_text || "No translated text found.";
+                document.getElementById('summary').textContent = resultData.summary || "No summary found.";
+            } catch (err) {
+                console.error("Error processing result data:", err);
+                document.getElementById('error-message').style.display = 'block';
+            }
+        } else {
+            // 세션 스토리지에 데이터가 없는 경우
+            document.getElementById('error-message').style.display = 'block';
+        }
+    </script>
+    
+</body>
+</html>
